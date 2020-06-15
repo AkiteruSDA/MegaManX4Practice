@@ -3,4 +3,13 @@ SystemID PSX
 1721C1	b	u	0	MainRAM	Game State 2
 1419BE	w	h	0	MainRAM	Stage Select Camera Position
 172219	b	h	0	MainRAM	Mavericks Defeated
+172204	b	h	0	MainRAM	Current Lives
+141924	b	u	0	MainRAM	Current HP
+1721CD	b	h	0	MainRAM	Stage Part 1/2
+166C09	b	h	0	MainRAM	Input 1 Prev?
+166C0B	b	h	0	MainRAM	Input 1 Curr?
+166C0D	b	h	0	MainRAM	Input 1 Next
+166C08	b	h	0	MainRAM	Input 2 Prev?
+166C0A	b	h	0	MainRAM	Input 2 Curr?
+166C0C	b	h	0	MainRAM	Input 2 Next
 
