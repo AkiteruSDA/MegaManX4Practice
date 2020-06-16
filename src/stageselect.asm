@@ -21,24 +21,18 @@ endreplace stage_select_skip_intros
 
 ; Hacks for when a stage is selected.
 stage_select_on_selection:
-replace 0x8002ED5C
+replace 0x8002ED44
+    ; Replaced a load delay slot with this jump
     jal stage_select_on_selection
 endreplace stage_select_on_selection
-    ; Overwritten/skipped code
-    lbu v0,1(s0)
-    sb $0,2(s0)
+    ; Skipped code
+    sb v0,0x0D(s0)
 
-    push t0
     push t1
     ; If select (?) is held, go to part 2 of stage.
-    li t0,0x01
     lb t1,INPUT_1_CURR
     nop ; load delay
-    and t1,t1,t0
-    bne t0,t1,@@done
-    ; li t0,0x01 - t0 is already 1 here
-    sb t0,STAGE_PART
-@@done:
+    andi t1,t1,0x01
+    sb t1,STAGE_PART
     pop t1
-    pop t0
     jr ra
