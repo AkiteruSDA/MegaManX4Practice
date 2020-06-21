@@ -22,7 +22,9 @@ endreplace @skip_intros
 ; Always show undefeated stage icons.
 @undefeated_stage_icons:
 replace 0x8002E5EC
+    ; overwriting an 8 byte pseudoinstruction
     li t1,0
+    nop
 endreplace @undefeated_stage_icons
 
 ; Make defeated stage icons flicker.
@@ -64,8 +66,23 @@ endreplace @defeated_icons_flicker
 replace 0x8002ED44
     jal @on_selection
 endreplace @on_selection
-    lb t1,INPUT_1_CURR
-    nop ; load delay
-    andi t1,t1,0x01
-    sb t1,STAGE_PART
+    lb t0,INPUT_2_CURR
+    lb t1,CURRENT_STAGE
+    andi t0,t0,0x0C
+    ; Hold L1 to go to part 2 of a maverick stage. (L1 is 0x04 on input 2)
+    srl t0,t0,2
+    andi t2,t0,1
+    sb t2,STAGE_PART
+    srl t2,t0,1
+    beq t2,$zero,@@set_items
+    ; Hold R1 to go to a non-maverick stage. (R1 is 0x08 on input 2)
+    subi t1,t1,1 ; Mav stage IDs start at 1 so zero-index it for the table
+    add t1,t1,t1 ; Table is of halfwords so double the index
+    lui t0,hi(org(stage_id_to_alt_stage_table))
+    add t0,t0,t1
+    lh t1,lo(org(stage_id_to_alt_stage_table))(t0)
+    nop
+    sh t1,CURRENT_STAGE
+@@set_items:
+    ; Do later
     jr ra
