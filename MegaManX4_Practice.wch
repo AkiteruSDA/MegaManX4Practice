@@ -3,6 +3,7 @@ SystemID PSX
 1721C1	b	u	0	MainRAM	Game State 2
 1419BE	w	h	0	MainRAM	Stage Select Camera Position
 172219	b	h	0	MainRAM	Mavericks Defeated
+17221A	b	h	0	MainRAM	Hearts Obtained
 172204	b	h	0	MainRAM	Current Lives
 141924	b	u	0	MainRAM	Current HP
 1721CD	b	h	0	MainRAM	Stage Part 1/2
@@ -12,4 +13,7 @@ SystemID PSX
 166C08	b	h	0	MainRAM	Input 2 Prev?
 166C0A	b	h	0	MainRAM	Input 2 Curr?
 166C0C	b	h	0	MainRAM	Input 2 Next
+1721C3	b	u	0	MainRAM	Stage Selection
+173D67	b	u	0	MainRAM	Stage Selection 2?
+173DA7	b	u	0	MainRAM	Selected stage bit position from right of mavericks defeated
 
