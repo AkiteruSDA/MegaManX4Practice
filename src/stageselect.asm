@@ -61,21 +61,40 @@ endreplace @defeated_icons_flicker
     srl t1,t1,1
     jr ra
 
+; Press select to toggle the defeated state of a maverick.
+@toggle_defeated:
+replace 0x8002EC90
+    jal @toggle_defeated
+    nop ; An instruction here was clobbering v0 in the branch delay slot before I had a chance to use it...
+endreplace @toggle_defeated
+    ; New input bytes are loaded in v0 here as a halfword
+    andi t0,v0,0x0100 ; Select is 0x01 on Input 2
+    beq t0,$zero,@@done
+    li t2,1
+    lb t0,SELECTION_STAGE_ID_MINUS_ONE
+    lb t1,MAVERICKS_DEFEATED
+    sllv t2,t2,t0
+    xor t1,t1,t2
+    sb t1,MAVERICKS_DEFEATED
+@@done:
+    jr ra
+    andi v0,v0,0x0840 ; This was the clobbering instruction mentioned above
+
 ; Hacks for when a stage is selected.
 @on_selection:
 replace 0x8002ED44
     jal @on_selection
 endreplace @on_selection
-    lb t0,INPUT_2_CURR
+    lb t0,INPUT_1_CURR
     lb t1,CURRENT_STAGE
     andi t0,t0,0x0C
-    ; Hold L1 to go to part 2 of a maverick stage. (L1 is 0x04 on input 2)
+    ; Hold L1 to go to part 2 of a maverick stage. (L1 is 0x04 on input 1)
     srl t0,t0,2
     andi t2,t0,1
     sb t2,STAGE_PART
     srl t2,t0,1
     beq t2,$zero,@@set_items
-    ; Hold R1 to go to a non-maverick stage. (R1 is 0x08 on input 2)
+    ; Hold R1 to go to a non-maverick stage. (R1 is 0x08 on input 1)
     subi t1,t1,1 ; Mav stage IDs start at 1 so zero-index it for the table
     add t1,t1,t1 ; Table is of halfwords so double the index
     lui t0,hi(org(stage_id_to_alt_stage_table))
