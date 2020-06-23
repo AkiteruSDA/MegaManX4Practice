@@ -29,6 +29,7 @@ INPUT_2_CURR equ 0x80166C0B
 INPUT_2_NEW equ 0x80166C0D
 MAVERICKS_DEFEATED equ 0x80172219
 SELECTION_STAGE_ID_MINUS_ONE equ 0x80173DA7 ; only in stage select
+REFIGHT_CAPSULE_STATES equ 0x801721EE ; 8 bytes. 00 is open, 01 is closing and 02 is closed.
 
 ; Macros for replacing existing code and then jumping back to cave org
 .macro replace,dest
@@ -54,6 +55,7 @@ SELECTION_STAGE_ID_MINUS_ONE equ 0x80173DA7 ; only in stage select
 
 .include "tables.asm"
 .include "stageselect.asm"
+.include "gameplay.asm"
 
 .endarea
 .close
