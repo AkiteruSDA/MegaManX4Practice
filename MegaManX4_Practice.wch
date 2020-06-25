@@ -16,4 +16,8 @@ SystemID PSX
 1721C3	b	u	0	MainRAM	Stage Selection
 173D67	b	u	0	MainRAM	Stage Selection 2?
 173DA7	b	u	0	MainRAM	Selected stage bit position from right of mavericks defeated
+1418D0	d	u	0	MainRAM	X Position Prev
+1418D4	d	u	0	MainRAM	Y Position Prev
+1418E0	d	u	0	MainRAM	X Position Curr
+1418E4	d	u	0	MainRAM	Y Position Curr
 
