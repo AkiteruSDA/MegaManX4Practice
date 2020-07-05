@@ -7,6 +7,13 @@ replace 0x8002E4D0
     lw v0,0x398+3*4(at)
 endreplace @character_select
 
+; When stage select initially reads mavericks defeated, load 0 instead.
+; This stops some special stage selection states (after 4 mavs, after 8 mavs etc)
+@mav_check:
+replace 0x8002E50C
+    li a1,0
+endreplace @mav_check
+
 ; Automatically scroll camera down on stage select.
 @camera_scroll:
 replace 0x8002E7E0
