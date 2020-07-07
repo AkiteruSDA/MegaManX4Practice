@@ -5,6 +5,7 @@ SystemID PSX
 1721DF	b	u	0	MainRAM	Show HP/Ammo
 1419BE	w	h	0	MainRAM	Stage Select Camera Position
 172219	b	h	0	MainRAM	Mavericks Defeated
+141981	b	h	0	MainRAM	Current Weapons
 17221A	b	h	0	MainRAM	Hearts Obtained
 172204	b	h	0	MainRAM	Current Lives
 141924	b	u	0	MainRAM	Current HP

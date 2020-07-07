@@ -99,3 +99,18 @@ endreplace @after_stage
 replace 0x8002DC18
     nop
 endreplace @infinite_hp
+
+; Enable Escape option in start menu in all stages.
+@escape_option:
+replace 0x80017514
+    nop ; Don't skip over updating start menu stuff based on current stage
+endreplace @escape_option
+replace 0x80017568
+    nop ; Always draw escape button regardless of if current stage is flagged defeated
+endreplace @escape_option
+replace 0x8002FF48
+    nop ; Nop out branch depending on current stage, which would disable escape option
+endreplace @escape_option
+replace 0x8002FF64
+    nop ; Nop out branch on mav not defeated for this stage, so every mav stage and endgame stages have escape option
+endreplace @escape_option
