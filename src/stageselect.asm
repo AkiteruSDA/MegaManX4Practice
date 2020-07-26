@@ -8,38 +8,6 @@ replace 0x8002E4B0
     li v1,3
 endreplace @stage_select_mode
 
-; Load stage select icon state 0 in every place it happens.
-; This always maintains the standard stage selection, with no middle selection
-; available. (There may be missing cases here, not sure)
-@stage_select_availability:
-replace 0x8002E6B0
-    li v0,0
-endreplace @stage_select_availability
-replace 0x8002E738
-    li v0,0
-endreplace @stage_select_availability
-replace 0x8002E898
-    li v0,0
-endreplace @stage_select_availability
-replace 0x800CA8EC
-    li v1,0
-endreplace @stage_select_availability
-replace 0x8002EB04
-    li v0,0
-endreplace @stage_select_availability
-replace 0x8002EA4C
-    li v0,0
-endreplace @stage_select_availability
-replace 0x8002E718
-    li v0,0
-endreplace @stage_select_availability
-replace 0x8002EE20
-    li v1,0
-endreplace @stage_select_availability
-replace 0x8001C414
-    li a2,0
-endreplace @stage_select_availability
-
 ; When stage select initially reads mavericks defeated, load 0 instead.
 ; This stops some special stage selection states (after 4 mavs, after 8 mavs etc)
 ; and always draws non-defeated stage icons.

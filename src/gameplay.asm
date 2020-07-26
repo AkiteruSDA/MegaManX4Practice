@@ -1,10 +1,24 @@
 .psx
 
-; Don't show weapon get screens by forcing mavs defeated to be read as 0xFF
-@weapon_get_disable:
-replace 0x80020128
-    li v0,0xFF
-endreplace @weapon_get_disable
+; Overwrite the logic for ending a stage to always either go to part 2 or go to mission complete
+@stage_end:
+replace 0x800200FC
+    lb v0,CURRENT_STAGE
+    lb v1,STAGE_PART
+    subi v0,v0,9 ; Will now be 0 if this is X's Colonel fight
+    beq v0,$zero,@@set_mission_complete
+    subi v0,v0,1 ; Will now be 0 if this is Space Port
+    beq v0,$zero,@@set_mission_complete
+    subi v1,1 ; Will now be 0 if already on part 2 of the stage
+    beq v1,$zero,@@set_mission_complete
+    li v1,1
+    sb v1,STAGE_PART
+    j 0x80020348
+    li v0,4 ; Game state 4 loads a stage. Existing code sets v0 to the game state after 0x80020348
+@@set_mission_complete:
+    j 0x80020348
+    li v0,9
+endreplace @stage_end
 
 ; Always keep refight capsules enabled.
 @capsules_enabled:
