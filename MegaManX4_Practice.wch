@@ -7,6 +7,7 @@ SystemID PSX
 172219	b	h	0	MainRAM	Mavericks Defeated
 141981	b	h	0	MainRAM	Current Weapons
 17221A	b	h	0	MainRAM	Hearts Obtained
+17221F	b	h	0	MainRAM	Stage Select Icon State
 172204	b	h	0	MainRAM	Current Lives
 141924	b	u	0	MainRAM	Current HP
 1721CD	b	h	0	MainRAM	Stage Part 1/2
