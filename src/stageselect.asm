@@ -10,7 +10,6 @@ endreplace @stage_select_mode
 
 ; When stage select initially reads mavericks defeated, load 0 instead.
 ; This stops some special stage selection states (after 4 mavs, after 8 mavs etc)
-; and always draws non-defeated stage icons.
 @mav_check:
 replace 0x8002E50C
     li a1,0

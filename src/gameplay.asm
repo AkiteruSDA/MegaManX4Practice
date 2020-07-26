@@ -87,6 +87,12 @@ replace 0x8002DC18
     nop
 endreplace @infinite_hp
 
+; Infinite lives
+@infinite_lives:
+replace 0x800202C0
+    nop
+endreplace @infinite_lives
+
 ; Enable Escape option in start menu in all stages.
 @escape_option:
 replace 0x80017514
