@@ -19,6 +19,7 @@ STAGE_ID_TO_STAGE_SELECT_TABLE_HI equ 0x800F
 STAGE_ID_TO_STAGE_SELECT_TABLE_LO equ 0x4758
 STAGE_ID_TO_STAGE_SELECT_TABLE equ 0x800F4758
 ; RAM Addresses
+GAME_STATE_1 equ 0x801721C0
 CURRENT_STAGE equ 0x801721CC
 STAGE_PART equ 0x801721CD
 INPUT_1_PREV equ 0x80166C08
@@ -53,9 +54,15 @@ REFIGHT_CAPSULE_STATES equ 0x801721EE ; 8 bytes. 00 is open, 01 is closing and 0
 .org 0x8011C200
 .area 0x03F0
 
-.include "tables.asm"
-.include "stageselect.asm"
-.include "gameplay.asm"
+; Assembly hacks
+.include "asm/tables.asm"
+.include "asm/stageselect.asm"
+.include "asm/gameplay.asm"
+.include "asm/menu.asm"
 
 .endarea
 .close
+
+; Non-assembly/data hacks. Files should be opened and closed where necessary since they can vary.
+; These changes require you to delete the bin and build folders before building.
+.include "data/menu.asm"

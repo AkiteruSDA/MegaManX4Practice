@@ -24,4 +24,6 @@ SystemID PSX
 1418D4	d	u	0	MainRAM	Y Position Prev
 1418E0	d	u	0	MainRAM	X Position Curr
 1418E4	d	u	0	MainRAM	Y Position Curr
+141BDF	b	u	0	MainRAM	Current Menu Option
+173CAE	b	u	0	MainRAM	Menu Cursor Y-Pos + 8
 
