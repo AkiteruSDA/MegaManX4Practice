@@ -15,3 +15,13 @@ replace 0xBC
 endreplace @continue_chars
 
 .close
+
+.open "../build/ARC/ST0E_U0_VANILLA.ARC", "../build/ARC/ST0E_U0.ARC", 0
+
+; Read 0 characters for title screen "CONTINUE" option
+@continue_chars_title:
+replace 0x14074
+    db 0x00
+endreplace @continue_chars_title
+
+.close

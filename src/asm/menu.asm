@@ -38,3 +38,19 @@ endreplace @top_wrap
 @@not_top:
     j 0x8002051C
     nop
+
+; Toggle between option 0 and 2 on title screen when moving cursor up
+@title_up:
+replace 0x8001D924
+    seq v0,v0,0
+    j 0x8001D938
+    sll v0,v0,1
+endreplace @title_up
+
+; Toggle between option 0 and 2 on title screen when moving cursor down
+@title_down:
+replace 0x8001D968
+    seq v0,v1,0
+    j 0x8001D97C
+    sll v0,v0,1
+endreplace @title_down

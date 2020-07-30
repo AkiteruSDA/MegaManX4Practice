@@ -11,6 +11,8 @@ if not exist "SLUS_005_VANILLA.61" (
 	chdir ARC
 	:: Menu option data (at the very least)
 	copy /Y /B MOJIPAT.ARC /B MOJIPAT_VANILLA.ARC /B >nul
+	:: Title option data (at the very least)
+	copy /Y /B ST0E_U0.ARC /B ST0E_U0_VANILLA.ARC /B >nul
 
 	chdir ..
 )
