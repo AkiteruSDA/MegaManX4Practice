@@ -10,3 +10,23 @@ stage_id_to_alt_stage_table:
     dh 0x0100 ; Peacock  -> Intro stage, part 2
     dh 0x0009 ; Owl      -> Colonel fight (X only)
     dh 0x000C ; Beast    -> Final Weapon 2, part 1
+
+; Maps stage IDs to items obtained in that stage. Each has 4 bytes, 2 bytes per part of the stage.
+; Least significant byte is hearts, most significant byte is tanks and X armor (least significant bits are armor, most significant are tanks)
+stage_id_to_item_table:
+    dh 0b0000100000000000 ; Spider, part 1 (boots)
+    dh 0b0000000000000001 ; Spider, part 2 (heart)
+    dh 0b1000000000000010 ; Walrus, part 1 (heart, ex tank)
+    dh 0b0100000000000000 ; Walrus, part 2 (weapon tank)
+    dh 0b0000000000000000 ; Mushroom, part 1 (nothing)
+    dh 0b0000000000000100 ; Mushroom, part 2 (heart)
+    dh 0b0000000000000000 ; Dragoon, part 1 (nothing)
+    dh 0b0000001000001000 ; Dragoon, part 2 (heart, body)
+    dh 0b0000000000010000 ; Stingray, part 1 (heart)
+    dh 0b0010000000000000 ; Stingray, part 2 (sub tank)
+    dh 0b0001000100100000 ; Peacock, part 1 (heart, sub tank, helmet)
+    dh 0b0000000000000000 ; Peacock, area 2 (nothing)
+    dh 0b0000000001000000 ; Owl, part 1 (heart)
+    dh 0b0000010000000000 ; Owl, part 2 (buster)
+    dh 0b0000000000000000 ; Beast, part 1 (nothing)
+    dh 0b0000000010000000 ; Beast, part 2 (heart)

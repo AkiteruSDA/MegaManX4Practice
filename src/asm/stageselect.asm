@@ -111,5 +111,103 @@ endreplace @on_selection
     nop
     sh t1,CURRENT_STAGE
 @@set_items:
-    ; Do later
+    ; Get mavericks defeated and fill tanks.
+    lb t1,MAVERICKS_DEFEATED
+    li t0,0x20
+    sb t0,WEP_HP
+    addi t0,t0,0xA080
+    sh t0,SUB_HP_1 ; Filling both sub tanks at once
+    ; Iterate across mavericks defeated and prepare the flags to set.
+    li t0,0 ; count, finished at 8. is stageid - 1
+    li t4,0 ; HEART FLAGS
+    li t5,0 ; TANK/ARMOR FLAGS
+@@items_loop:
+    lui t3,hi(org(stage_id_to_item_table))
+    sll t0,t0,2
+    addu t3,t3,t0
+    andi t2,t1,1
+    beq t2,$zero,@@check_pt2 ; Maverick not defeated, so go to second check
+    srl t0,t0,2
+    j @@check_special
+    nop
+@@check_pt2:
+    ; If iterating over the current stage and going to part 2, add the items from part 1.
+    lb t2,CURRENT_STAGE
+    addi t0,t0,1
+    bne t0,t2,@@loop_check
+    subi t0,t0,1
+    lb t2,STAGE_PART
+    nop
+    bne t2,$zero,@@current_stage_pt_2
+    nop
+    j @@loop_check
+    nop
+@@check_special:
+    ; SPECIAL CASE:
+    ; If playing as X, currently iterating on Dragoon, and Current Stage ID is not:
+    ; - Mushroom
+    ; - Peacock
+    ; - Space Port
+    ; - Final Weapon 1
+    ; - Final Weapon 2
+    ; do not set any flags.
+    ; This is because in the X 100% route, the items in this stage are obtained in a revisit
+    ; after the other 6 mavs besides Mushroom and Peacock are defeated.
+    lb t2,CURRENT_PLAYER
+    nop
+    bne t2,$zero,@@do_standard ; Player ID for X is 0
+    lb t2,CURRENT_STAGE
+    nop
+    subi t2,t2,STAGE_ID_MUSHROOM
+    beq t2,$zero,@@do_standard
+    subi t2,t2,3
+    beq t2,$zero,@@do_standard ; if 0, on peacock
+    subi t2,t2,4
+    beq t2,$zero,@@do_standard ; if 0, on space port
+    subi t2,t2,1
+    beq t2,$zero,@@do_standard ; if 0, on final weapon 1
+    subi t2,t2,1
+    beq t2,$zero,@@do_standard ; if 0, on final weapon 2
+    li t2,STAGE_ID_DRAGOON
+    addi t0,t0,1
+    beq t0,t2,@@loop_check
+    subi t0,t0,1
+@@do_standard:
+    j @@flags_loop
+@@current_stage_pt_2:
+    lw t2,lo(org(stage_id_to_item_table))(t3) ; this runs in the delay slot of the above jump as well
+    nop
+    andi t2,t2,0xFFFF
+@@flags_loop:
+    nop
+    beq t2,$zero,@@loop_check
+    or t4,t4,t2
+    srl t2,t2,8
+    or t5,t5,t2
+    j @@flags_loop
+    srl t2,t2,8
+@@loop_check:
+    addi t0,t0,1
+    bne t0,8,@@items_loop
+    srl t1,t1,1
+    ; Set hearts obtained and max HP.
+    andi t4,t4,0xFF
+    sb t4,HEARTS_OBTAINED
+    li t1,0x20
+@@max_hp_loop:
+    andi t2,t4,1
+    sll t2,t2,1
+    add t1,t1,t2
+    bne t4,$zero,@@max_hp_loop
+    srl t4,t4,1
+    sb t1,MAX_HP
+    ; Set tanks and armor.
+    andi t1,t5,0x0F
+    sb t1,ARMOR_OBTAINED
+    andi t1,t5,4
+    srl t1,t1,2
+    sb t1,BUSTER_TYPE ; If buster upgrade was obtained, set buster type to 1 (4-shot)
+    andi t1,t5,0xF0
+    sb t1,TANKS_OBTAINED
     jr ra
+    nop

@@ -4,11 +4,19 @@ SystemID PSX
 1721DE	b	u	0	MainRAM	Player Spawned
 1721DF	b	u	0	MainRAM	Show HP/Ammo
 1419BE	w	h	0	MainRAM	Stage Select Camera Position
+1721CC	b	u	0	MainRAM	Current Stage
 172219	b	h	0	MainRAM	Mavericks Defeated
 141981	b	h	0	MainRAM	Current Weapons
 17221A	b	h	0	MainRAM	Hearts Obtained
+17221B	b	u	0	MainRAM	Tanks (Upper 4 bits)
+17221C	b	u	0	MainRAM	Tank 1 HP (128=0)
+17221D	b	u	0	MainRAM	Tank 2 HP (128=0)
+17221E	b	u	0	MainRAM	Wep Tank HP
+172207	b	u	0	MainRAM	X Upgrades (Lower 4 bits)
+172208	b	u	0	MainRAM	Buster type
 17221F	b	h	0	MainRAM	Stage Select Icon State
 172204	b	h	0	MainRAM	Current Lives
+172206	b	u	0	MainRAM	Max HP
 141924	b	u	0	MainRAM	Current HP
 1721CD	b	h	0	MainRAM	Stage Part 1/2
 166C09	b	h	0	MainRAM	Input 1 Prev?
@@ -27,4 +35,5 @@ SystemID PSX
 141BDF	b	u	0	MainRAM	Current Menu Option
 173CAE	b	u	0	MainRAM	Menu Cursor Y-Pos + 8
 173C72	b	u	0	MainRAM	Title Menu Option
+17221C	b	u	0	MainRAM	
 
