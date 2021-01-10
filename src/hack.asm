@@ -28,6 +28,7 @@ GAME_STATE_1 equ 0x801721C0
 CURRENT_PLAYER equ 0x80172203
 CURRENT_STAGE equ 0x801721CC
 STAGE_PART equ 0x801721CD
+CURRENT_CHECKPOINT equ 0x801721DD
 MAX_HP equ 0x80172206
 SUB_HP_1 equ 0x8017221C
 SUB_HP_2 equ 0x8017221D
@@ -45,6 +46,8 @@ INPUT_2_NEW equ 0x80166C0D
 MAVERICKS_DEFEATED equ 0x80172219
 SELECTION_STAGE_ID_MINUS_ONE equ 0x80173DA7 ; only in stage select
 REFIGHT_CAPSULE_STATES equ 0x801721EE ; 8 bytes. 00 is open, 01 is closing and 02 is closed.
+TELEPORT_VALUE_1 equ 0x801418CC ; Set to 0x0003 when teleporting
+TELEPORT_VALUE_2 equ 0x801721CF ; Set to 0x00C0 when teleporting
 
 ; Macros for replacing existing code and then jumping back to cave org
 .macro replace,dest
@@ -65,8 +68,8 @@ REFIGHT_CAPSULE_STATES equ 0x801721EE ; 8 bytes. 00 is open, 01 is closing and 0
 .endmacro
 
 ; This block is the main area for now.
-.org 0x8011C200
-.area 0x03F0
+.org 0x8011E3F0
+.area 0x08E0
 
 ; Assembly hacks
 .include "asm/tables.asm"

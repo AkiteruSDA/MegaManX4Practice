@@ -36,4 +36,5 @@ SystemID PSX
 173CAE	b	u	0	MainRAM	Menu Cursor Y-Pos + 8
 173C72	b	u	0	MainRAM	Title Menu Option
 17221C	b	u	0	MainRAM	
+1721CF	b	u	0	MainRAM	Set to 0xC0 for reload
 

@@ -87,6 +87,98 @@ replace 0x800202C0
     nop
 endreplace @infinite_lives
 
+; Show current checkpoint under health bar instead of lives.
+@show_checkpoint:
+replace 0x80024EA8
+    lbu a1,CURRENT_CHECKPOINT
+endreplace @show_checkpoint
+
+; Select+INPUT hacks
+@select_hacks:
+replace 0x8001247C ; this only runs when the screen isn't fading out
+    jal @select_hacks
+    nop ; there's an lhu here, nopping out second part of 2-instruction
+endreplace @select_hacks
+    lhu v0,INPUT_1_PREV
+    push t1
+    push t2
+    ; If not in a gameplay state, don't do anything. (0x0006 halfword)
+    lhu t1,GAME_STATE_1
+    nop
+    subi t1,t1,0x0006
+    bne t1,$zero,@@done
+    ; If not pressing select already, don't do anything. (0x0100 on prev)
+    andi v0,v0,0x0100
+    subi v0,v0,0x0100
+    bne v0,$zero,@@done
+    lhu v0,INPUT_1_NEW
+    nop
+    andi t2,v0,0x0001
+    li t1,0x0001
+    beq t2,t1,@@select_l2
+    andi t2,v0,0x8000
+    li t1,0x8000
+    beq t2,t1,@@select_left
+    andi t2,v0,0x2000
+    li t1,0x2000
+    beq t2,t1,@@select_right
+    nop
+    j @@done
+    nop
+@@select_l2:
+    li t1,0x0003
+    sh t1,TELEPORT_VALUE_1
+    li t1,0x00C0
+    ; can't sh here, unaligned?
+    sb t1,TELEPORT_VALUE_2
+    srl t1,8
+    sb t1,(TELEPORT_VALUE_2 + 1)
+    j @@done
+    nop
+@@select_left:
+    lb t1,CURRENT_STAGE
+    lui t0,hi(org(stage_id_to_num_checkpoints))
+    sll t1,t1,1
+    addu t0,t0,t1
+    lb t1,STAGE_PART
+    nop
+    addu t0,t0,t1
+    lb t1,CURRENT_CHECKPOINT
+    lb t0,lo(org(stage_id_to_num_checkpoints))(t0)
+    subi t1,t1,1
+    bge t1,$zero,@@finish_select_left
+    ; Loop to highest possible checkpoint
+    subi t0,t0,1
+    addu t1,$zero,t0
+@@finish_select_left:
+    sb t1,CURRENT_CHECKPOINT
+    j @@done
+    nop
+@@select_right:
+    lb t1,CURRENT_STAGE
+    lui t0,hi(org(stage_id_to_num_checkpoints))
+    sll t1,t1,1
+    addu t0,t0,t1
+    lb t1,STAGE_PART
+    nop
+    addu t0,t0,t1
+    lb t1,CURRENT_CHECKPOINT
+    lb t0,lo(org(stage_id_to_num_checkpoints))(t0)
+    addiu t1,t1,1
+    blt t1,t0,@@finish_select_right
+    nop
+    li t1,0
+@@finish_select_right:
+    sb t1,CURRENT_CHECKPOINT
+    j @@done
+    nop
+@@done:
+    lhu v0,INPUT_1_PREV ; Overwritten code.
+    pop t2
+    pop t1
+    jr ra
+    nop
+
 ; Enable Escape option in start menu in all stages.
 @escape_option:
 replace 0x80017514

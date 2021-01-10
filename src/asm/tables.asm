@@ -30,3 +30,20 @@ stage_id_to_item_table:
     dh 0b0000010000000000 ; Owl, part 2 (buster)
     dh 0b0000000000000000 ; Beast, part 1 (nothing)
     dh 0b0000000010000000 ; Beast, part 2 (heart)
+    dh 0x0000 ; Padding for alignment
+
+; NOT (STAGE ID - 1) LIKE THE OTHERS SINCE IT INCLUDES MORE THAN JUST MAVS, One byte per part
+stage_id_to_num_checkpoints:
+    dh 0x0303 ; 0, Intro
+    dh 0x0605 ; 1, Spider
+    dh 0x0405 ; 2, Walrus
+    dh 0x0304 ; 3, Mushroom
+    dh 0x0402 ; 4, Dragoon
+    dh 0x0201 ; 5, Stingray
+    dh 0x0206 ; 6, Peacock
+    dh 0x0403 ; 7, Owl
+    dh 0x0403 ; 8, Beast
+    dh 0x0001 ; 9, Colonel fight (X only)
+    dh 0x0003 ; 10, Space Port
+    dh 0x0302 ; 11, Final Weapon 1
+    dh 0x010B ; 12, Final Weapon 2
