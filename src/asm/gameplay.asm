@@ -81,12 +81,6 @@ replace 0x800F3FBC
     db 0x6A ; Spider
 endreplace @capsule_respawn_positions
 
-; TEMP: INFINITE HP
-@infinite_hp:
-replace 0x8002DC18
-    nop
-endreplace @infinite_hp
-
 ; Infinite lives
 @infinite_lives:
 replace 0x800202C0
