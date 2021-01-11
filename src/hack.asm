@@ -23,6 +23,8 @@ STAGE_SELECT_TO_STAGE_ID_TABLE equ 0x800F474C
 STAGE_ID_TO_STAGE_SELECT_TABLE_HI equ 0x800F
 STAGE_ID_TO_STAGE_SELECT_TABLE_LO equ 0x4758
 STAGE_ID_TO_STAGE_SELECT_TABLE equ 0x800F4758
+PLAY_SOUND_SUB equ 0x8001540C ; plays sound id currently on a1
+MENU_SELECT_SOUND_ID equ 0x22
 ; RAM Addresses
 GAME_STATE_1 equ 0x801721C0
 CURRENT_PLAYER equ 0x80172203
@@ -30,6 +32,8 @@ CURRENT_STAGE equ 0x801721CC
 STAGE_PART equ 0x801721CD
 CURRENT_CHECKPOINT equ 0x801721DD
 MAX_HP equ 0x80172206
+CURRENT_HP equ 0x80141924
+WEAPON_ENERGIES equ 0x80141970 ; 16 bytes, max at 0x30 each
 SUB_HP_1 equ 0x8017221C
 SUB_HP_2 equ 0x8017221D
 WEP_HP equ 0x8017221E
@@ -48,6 +52,13 @@ SELECTION_STAGE_ID_MINUS_ONE equ 0x80173DA7 ; only in stage select
 REFIGHT_CAPSULE_STATES equ 0x801721EE ; 8 bytes. 00 is open, 01 is closing and 02 is closed.
 TELEPORT_VALUE_1 equ 0x801418CC ; Set to 0x0003 when teleporting
 TELEPORT_VALUE_2 equ 0x801721CF ; Set to 0x00C0 when teleporting
+TEMP_RAM equ 0x8011E3F0
+TEMP_RAM_LENGTH equ 16
+HEARTS_STORAGE equ (TEMP_RAM + 0)
+TANKS_STORAGE equ (TEMP_RAM + 1)
+ARMOR_STORAGE equ (TEMP_RAM + 2)
+CAVE equ 0x8011E400
+CAVE_LENGTH equ 0x08D0
 
 ; Macros for replacing existing code and then jumping back to cave org
 .macro replace,dest
@@ -68,15 +79,22 @@ TELEPORT_VALUE_2 equ 0x801721CF ; Set to 0x00C0 when teleporting
 .endmacro
 
 ; This block is the main area for now.
-.org 0x8011E3F0
-.area 0x08E0
+; There are 16 bytes here for storing temporary things in RAM
+.org TEMP_RAM
+.area TEMP_RAM_LENGTH
+.dw 0x00000000
+.dw 0x00000000
+.dw 0x00000000
+.dw 0x00000000
+.endarea
 
+.org CAVE
+.area CAVE_LENGTH
 ; Assembly hacks
 .include "asm/tables.asm"
 .include "asm/stageselect.asm"
 .include "asm/gameplay.asm"
 .include "asm/menu.asm"
-
 .endarea
 .close
 

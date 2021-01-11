@@ -209,5 +209,9 @@ endreplace @on_selection
     sb t1,BUSTER_TYPE ; If buster upgrade was obtained, set buster type to 1 (4-shot)
     andi t1,t5,0xF0
     sb t1,TANKS_OBTAINED
+    lh t1,HEARTS_OBTAINED
+    lb t2,ARMOR_OBTAINED
+    sh t1,HEARTS_STORAGE
+    sb t2,ARMOR_STORAGE
     jr ra
     nop
