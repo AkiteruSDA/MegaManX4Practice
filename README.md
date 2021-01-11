@@ -37,6 +37,7 @@ checkpoint instead.
 Select+R2:
 Save your current hearts, tanks, and armor upgrades. This allows you to
 go back to a previous state when loading to checkpoint.
+A noise plays when your save was successful.
 
 Select+L2:
 Load to the currently set checkpoint. If items were set with Select+R2,
