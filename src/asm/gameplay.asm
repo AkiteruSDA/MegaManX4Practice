@@ -90,7 +90,7 @@ endreplace @infinite_lives
 ; Show current checkpoint under health bar instead of lives.
 @show_checkpoint:
 replace 0x80024EA8
-    lbu a1,CURRENT_CHECKPOINT
+    lbu a1,CHECKPOINT_STORAGE
 endreplace @show_checkpoint
 
 ; Select+INPUT hacks
@@ -162,7 +162,9 @@ endreplace @select_hacks
     sw t1,WEAPON_ENERGIES
     sw t1,(WEAPON_ENERGIES + 4)
     sw t1,(WEAPON_ENERGIES + 8)
+    lb t2,CHECKPOINT_STORAGE
     sw t1,(WEAPON_ENERGIES + 12)
+    sb t2,CURRENT_CHECKPOINT
     j @@done
     nop
 @@select_r2:
@@ -192,7 +194,7 @@ endreplace @select_hacks
     lb t1,STAGE_PART
     nop
     addu t0,t0,t1
-    lb t1,CURRENT_CHECKPOINT
+    lb t1,CHECKPOINT_STORAGE
     lb t0,lo(org(stage_id_to_num_checkpoints))(t0)
     subi t1,t1,1
     bge t1,$zero,@@finish_select_left
@@ -200,7 +202,7 @@ endreplace @select_hacks
     subi t0,t0,1
     addu t1,$zero,t0
 @@finish_select_left:
-    sb t1,CURRENT_CHECKPOINT
+    sb t1,CHECKPOINT_STORAGE
     j @@done
     nop
 @@select_right:
@@ -211,14 +213,14 @@ endreplace @select_hacks
     lb t1,STAGE_PART
     nop
     addu t0,t0,t1
-    lb t1,CURRENT_CHECKPOINT
+    lb t1,CHECKPOINT_STORAGE
     lb t0,lo(org(stage_id_to_num_checkpoints))(t0)
     addiu t1,t1,1
     blt t1,t0,@@finish_select_right
     nop
     li t1,0
 @@finish_select_right:
-    sb t1,CURRENT_CHECKPOINT
+    sb t1,CHECKPOINT_STORAGE
     j @@done
     nop
 @@done:

@@ -213,5 +213,6 @@ endreplace @on_selection
     lb t2,ARMOR_OBTAINED
     sh t1,HEARTS_STORAGE
     sb t2,ARMOR_STORAGE
+    sb $zero,CHECKPOINT_STORAGE
     jr ra
     nop

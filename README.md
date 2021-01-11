@@ -30,17 +30,17 @@ Beast    -> Final Weapon 2, part 1
 Gameplay:
 ---------
 Select+Left, Select+Right:
-Decrement or increment the current checkpoint respectively.
+Decrement or increment the saved checkpoint.
 You have infinite lives, so the lives counter shows the current
-checkpoint instead.
+saved checkpoint instead.
 
 Select+R2:
 Save your current hearts, tanks, and armor upgrades. This allows you to
-go back to a previous state when loading to checkpoint.
+go back to a previous item state when loading to checkpoint.
 A noise plays when your save was successful.
 
 Select+L2:
-Load to the currently set checkpoint. If items were set with Select+R2,
+Load to the currently saved checkpoint. If items were set with Select+R2,
 they will be restored. If not, you will be given the items you originally
 obtained when starting the stage.
 Your health, weapon energy, and tanks will be refilled.
