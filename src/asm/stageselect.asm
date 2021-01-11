@@ -190,29 +190,21 @@ endreplace @on_selection
     addi t0,t0,1
     bne t0,8,@@items_loop
     srl t1,t1,1
-    ; Set hearts obtained and max HP.
+    ; Store hearts obtained.
     andi t4,t4,0xFF
-    sb t4,HEARTS_OBTAINED
-    li t1,0x20
-@@max_hp_loop:
-    andi t2,t4,1
-    sll t2,t2,1
-    add t1,t1,t2
-    bne t4,$zero,@@max_hp_loop
-    srl t4,t4,1
-    sb t1,MAX_HP
-    ; Set tanks and armor.
+    sb t4,HEARTS_STORAGE
+    ; Store tanks and armor.
     andi t1,t5,0x0F
-    sb t1,ARMOR_OBTAINED
+    sb t1,ARMOR_STORAGE
     andi t1,t5,4
     srl t1,t1,2
     sb t1,BUSTER_TYPE ; If buster upgrade was obtained, set buster type to 1 (4-shot)
     andi t1,t5,0xF0
-    sb t1,TANKS_OBTAINED
-    lh t1,HEARTS_OBTAINED
-    lb t2,ARMOR_OBTAINED
-    sh t1,HEARTS_STORAGE
-    sb t2,ARMOR_STORAGE
+    sb t1,TANKS_STORAGE
+    push ra
+    jal load_upgrades
+    nop
+    pop ra
     sb $zero,CHECKPOINT_STORAGE
     jr ra
     nop

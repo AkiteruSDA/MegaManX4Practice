@@ -21,15 +21,12 @@ replace 0x800200FC
 endreplace @stage_end
     ; I can't remember how much space left I have above to overwrite more existing code,
     ; so I'll just jump to my own space on going to part 2 of a stage for now.
-    push t0
     push t1
-    lb t0,ARMOR_OBTAINED
-    lh t1,HEARTS_OBTAINED
-    sb t0,ARMOR_STORAGE
-    sh t1,HEARTS_STORAGE
+    push ra
+    jal store_upgrades
     sb $zero,CHECKPOINT_STORAGE
+    pop ra
     pop t1
-    pop t0
     j 0x80020348
     li v0,4 ; Game state 4 loads a stage. Existing code sets v0 to the game state after 0x80020348
 
@@ -138,6 +135,9 @@ endreplace @select_hacks
     andi t2,v0,0x2000
     li t1,0x2000
     beq t2,t1,@@select_right
+    andi t2,v0,0x1000
+    li t1,0x1000
+    beq t2,t1,@@select_up
     nop
     j @@done
     nop
@@ -149,42 +149,21 @@ endreplace @select_hacks
     sb t1,TELEPORT_VALUE_2
     srl t1,8
     sb t1,(TELEPORT_VALUE_2 + 1)
-    lh t1,HEARTS_STORAGE
-    lb t2,ARMOR_STORAGE
-    sh t1,HEARTS_OBTAINED
-    sb t2,ARMOR_OBTAINED
-    ; Reset HP based on hearts
-    andi t1,0xFF
-    li v0,0x20
-@@max_hp_loop:
-    andi t2,t1,1
-    sll t2,t2,1
-    add v0,v0,t2
-    bne t1,$zero,@@max_hp_loop
-    srl t1,t1,1
-    sb v0,MAX_HP
-    sb v0,CURRENT_HP
-    ; Fill sub tanks and weapon tank
-    li t1,0x20
-    sb t1,WEP_HP
-    addi t1,t1,0xA080
-    sh t1,SUB_HP_1 ; Filling both sub tanks at once
-    ; Fill all weapon energy
-    lui t1,0x3030
-    addiu t1,t1,0x3030
-    sw t1,WEAPON_ENERGIES
-    sw t1,(WEAPON_ENERGIES + 4)
-    sw t1,(WEAPON_ENERGIES + 8)
+    push ra
+    jal load_upgrades
+    nop
+    jal refill_all
+    nop
     lb t2,CHECKPOINT_STORAGE
-    sw t1,(WEAPON_ENERGIES + 12)
+    pop ra
     sb t2,CURRENT_CHECKPOINT
     j @@done
     nop
 @@select_r2:
-    lh t1,HEARTS_OBTAINED
-    lb t2,ARMOR_OBTAINED
-    sh t1,HEARTS_STORAGE
-    sb t2,ARMOR_STORAGE
+    push ra
+    jal store_upgrades
+    nop
+    pop ra
     push a0
     push a1
     push a2
@@ -236,6 +215,13 @@ endreplace @select_hacks
     sb t1,CHECKPOINT_STORAGE
     j @@done
     nop
+@@select_up:
+    push ra
+    jal refill_all
+    nop
+    pop ra
+    ; j @@done
+    ; nop
 @@done:
     lhu v0,INPUT_1_PREV ; Overwritten code.
     pop t2

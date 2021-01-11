@@ -93,6 +93,7 @@ CAVE_LENGTH equ 0x08D0
 .area CAVE_LENGTH
 ; Assembly hacks
 .include "asm/tables.asm"
+.include "asm/utils.asm"
 .include "asm/stageselect.asm"
 .include "asm/gameplay.asm"
 .include "asm/menu.asm"
