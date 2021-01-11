@@ -13,12 +13,25 @@ replace 0x800200FC
     beq v1,$zero,@@set_mission_complete
     li v1,1
     sb v1,STAGE_PART
-    j 0x80020348
-    li v0,4 ; Game state 4 loads a stage. Existing code sets v0 to the game state after 0x80020348
+    j @stage_end
+    nop
 @@set_mission_complete:
     j 0x80020348
     li v0,9
 endreplace @stage_end
+    ; I can't remember how much space left I have above to overwrite more existing code,
+    ; so I'll just jump to my own space on going to part 2 of a stage for now.
+    push t0
+    push t1
+    lb t0,ARMOR_OBTAINED
+    lh t1,HEARTS_OBTAINED
+    sb t0,ARMOR_STORAGE
+    sh t1,HEARTS_STORAGE
+    sb $zero,CHECKPOINT_STORAGE
+    pop t1
+    pop t0
+    j 0x80020348
+    li v0,4 ; Game state 4 loads a stage. Existing code sets v0 to the game state after 0x80020348
 
 ; Always keep refight capsules enabled.
 @capsules_enabled:
