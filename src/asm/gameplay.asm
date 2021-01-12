@@ -229,6 +229,14 @@ endreplace @select_hacks
     jr ra
     nop
 
+; Remove WARNING sirens before bosses.
+; This copies the address from index 2 in a jump table over the address in index 1,
+; where index 1 starts the WARNING siren and index 2 spawns the boss.
+@warning_remove:
+replace 0x8010BE84
+    dw 0x800BAF04
+endreplace @warning_remove
+
 ; Enable Escape option in start menu in all stages.
 @escape_option:
 replace 0x80017514

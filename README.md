@@ -34,6 +34,9 @@ Decrement or increment the saved checkpoint.
 You have infinite lives, so the lives counter shows the current
 saved checkpoint instead.
 
+Select+Up:
+Refills your health, tanks, and weapon energy.
+
 Select+R2:
 Save your current hearts, tanks, and armor upgrades. This allows you to
 go back to a previous item state when loading to checkpoint.
@@ -44,6 +47,8 @@ Load to the currently saved checkpoint. If items were set with Select+R2,
 they will be restored. If not, you will be given the items you originally
 obtained when starting the stage.
 Your health, weapon energy, and tanks will be refilled.
+
+The WARNING sirens before boss fights have been removed.
 
 Pause Menu:
 -----------
