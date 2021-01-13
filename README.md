@@ -52,15 +52,18 @@ Your health, weapon energy, and tanks will be refilled.
 
 The WARNING sirens before boss fights have been removed.
 
+In refights, capsules are not deactivated after killing a Maverick.
+Your character's position is slightly different after returning
+from a refight so as to not immediately re-enter the capsule.
+The center capsule is always activated.
+
 The Final Sigma fight is infinite. Once you destroy a form, it will respawn again with full health after the next phase.
 
 Pause Menu:
 -----------
 You can escape from every stage instead of just completed stages.
 
-Final Weapon 2, part 1 (refights):
-----------------------------------
-Capsules are not deactivated after killing a Maverick.
-Your character's position is slightly different after returning
-from a refight so as to not immediately re-enter the capsule.
-The center capsule is always activated.
+Known issues:
+-----------
+Loading a previous checkpoint after entering a boss room can mess up enemy graphics in the stage.
+No intention of fixing this at the moment due to complexity.
