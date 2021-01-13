@@ -29,6 +29,8 @@ Beast    -> Final Weapon 2, part 1
 
 Gameplay:
 ---------
+Note: Press select before the modifier.
+
 Select+Left, Select+Right:
 Decrement or increment the saved checkpoint.
 You have infinite lives, so the lives counter shows the current

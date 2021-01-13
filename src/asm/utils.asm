@@ -45,6 +45,9 @@ load_upgrades:
     lh t1,HEARTS_STORAGE
     lb t2,ARMOR_STORAGE
     sh t1,HEARTS_OBTAINED
+    andi t3,t2,4
+    srl t3,t3,2
+    sb t3,BUSTER_TYPE ; If buster upgrade was obtained, set buster type to 1 (4-shot)
     sb t2,ARMOR_OBTAINED
     lbu t2,HEARTS_OBTAINED
     li t1,0x20

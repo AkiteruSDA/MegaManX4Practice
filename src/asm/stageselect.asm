@@ -196,9 +196,6 @@ endreplace @on_selection
     ; Store tanks and armor.
     andi t1,t5,0x0F
     sb t1,ARMOR_STORAGE
-    andi t1,t5,4
-    srl t1,t1,2
-    sb t1,BUSTER_TYPE ; If buster upgrade was obtained, set buster type to 1 (4-shot)
     andi t1,t5,0xF0
     sb t1,TANKS_STORAGE
     push ra
