@@ -25,6 +25,7 @@ endreplace @stage_end
     push ra
     jal store_upgrades
     sb $zero,CHECKPOINT_STORAGE
+    sb $zero,WEAPON_STORAGE
     pop ra
     pop t1
     j 0x80020348

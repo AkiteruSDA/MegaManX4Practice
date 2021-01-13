@@ -33,6 +33,9 @@ store_upgrades:
     lb t1,ARMOR_OBTAINED
     nop
     sb t1,ARMOR_STORAGE
+    lb t1,CURRENT_WEAPON
+    nop
+    sb t1,WEAPON_STORAGE
     jr ra
     nop
 
@@ -48,7 +51,9 @@ load_upgrades:
     andi t3,t2,4
     srl t3,t3,2
     sb t3,BUSTER_TYPE ; If buster upgrade was obtained, set buster type to 1 (4-shot)
+    lb t1,WEAPON_STORAGE
     sb t2,ARMOR_OBTAINED
+    sb t1,CURRENT_WEAPON
     lbu t2,HEARTS_OBTAINED
     li t1,0x20
 @@max_hp_loop:

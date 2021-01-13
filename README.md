@@ -40,7 +40,7 @@ Select+Up:
 Refills your health, tanks, and weapon energy.
 
 Select+R2:
-Save your current hearts, tanks, and armor upgrades. This allows you to
+Save your current hearts, tanks, armor upgrades, and current weapon. This allows you to
 go back to a previous item state when loading to checkpoint.
 A noise plays when your save was successful.
 
