@@ -50,6 +50,8 @@ Your health, weapon energy, and tanks will be refilled.
 
 The WARNING sirens before boss fights have been removed.
 
+The Final Sigma fight is infinite. Once you destroy a form, it will respawn again with full health after the next phase.
+
 Pause Menu:
 -----------
 You can escape from every stage instead of just completed stages.

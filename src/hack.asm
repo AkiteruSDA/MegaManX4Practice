@@ -52,12 +52,18 @@ SELECTION_STAGE_ID_MINUS_ONE equ 0x80173DA7 ; only in stage select
 REFIGHT_CAPSULE_STATES equ 0x801721EE ; 8 bytes. 00 is open, 01 is closing and 02 is closed.
 TELEPORT_VALUE_1 equ 0x801418CC ; Set to 0x0003 when teleporting
 TELEPORT_VALUE_2 equ 0x801721CF ; Set to 0x00C0 when teleporting
+ONE_BEFORE_SIGMA_HPS equ 0x8013BF61 ; to use v0 as an offset in @sigma_infinite
+GUNNER_SIGMA_HP equ 0x8013BF62
+GROUND_SIGMA_HP equ 0x8013BF63
+SIGMA_FIGHT_LIFECYCLE equ 0x8013BF66 ; will be 2 before ground spawns, 6 before gunner spawns
+SIGMA_FIGHT_STATE equ 0x8013B8B8 ; 0 is both alive, 1 is gunner dead, 2 is ground dead
 TEMP_RAM equ 0x8011E3F0
 TEMP_RAM_LENGTH equ 16
 HEARTS_STORAGE equ (TEMP_RAM + 0)
 TANKS_STORAGE equ (TEMP_RAM + 1)
 ARMOR_STORAGE equ (TEMP_RAM + 2)
 CHECKPOINT_STORAGE equ (TEMP_RAM + 3)
+SPAWN_NEXT_SIGMA equ (TEMP_RAM + 4)
 CAVE equ 0x8011E400
 CAVE_LENGTH equ 0x08D0
 

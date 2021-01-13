@@ -237,6 +237,68 @@ replace 0x8010BE84
     dw 0x800BAF04
 endreplace @warning_remove
 
+; Refill HP of Sigma forms on death and keep fight state at 0 (both alive)
+@sigma_reset_state:
+replace 0x8008F644
+    ; Keep the fight state at 0 when one of the forms dies, and refill the HP.
+    jal @sigma_reset_state
+    nop
+endreplace @sigma_reset_state
+    ; v0 here is 2 if ground is dying, 1 if gunner is dying
+    sb $zero,SIGMA_FIGHT_STATE
+    sb v0,SPAWN_NEXT_SIGMA
+    push t0
+    push t1
+    ; Increment the lifecycle state to keep the logic above working.
+    li t0,0x30
+    la t1,ONE_BEFORE_SIGMA_HPS
+    add t1,t1,v0
+    sb t0,0(t1)
+    pop t1
+    pop t0
+    jr ra
+    nop
+
+@sigma_check_spawn_ground:
+replace 0x8008DB6C
+    jal @sigma_check_spawn_ground
+    nop
+    nop
+    nop
+endreplace @sigma_check_spawn_ground
+    lbu v1,SPAWN_NEXT_SIGMA
+    li v0,0 ; neutral
+    beq v1,v0,@@spawn_ground_trampoline
+    li v0,1 ; gunner just died
+    beq v1,v0,@@spawn_ground_trampoline
+    nop
+    jr ra
+    nop
+@@spawn_ground_trampoline:
+    sb $zero,SPAWN_NEXT_SIGMA
+    j 0x8008DBE8
+    li v0,6
+
+@sigma_check_spawn_gunner:
+replace 0x8008DBC4
+    jal @sigma_check_spawn_gunner
+    nop
+    nop
+    nop
+endreplace @sigma_check_spawn_gunner
+    lbu v1,SPAWN_NEXT_SIGMA
+    li v0,0 ; neutral
+    beq v1,v0,@@spawn_gunner_trampoline
+    li v0,2 ; ground just died
+    beq v1,v0,@@spawn_gunner_trampoline
+    nop
+    jr ra
+    nop
+@@spawn_gunner_trampoline:
+    sb $zero,SPAWN_NEXT_SIGMA
+    j 0x8008DBE4
+    li v0,2
+
 ; Enable Escape option in start menu in all stages.
 @escape_option:
 replace 0x80017514
