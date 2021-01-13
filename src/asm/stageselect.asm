@@ -206,5 +206,6 @@ endreplace @on_selection
     nop
     pop ra
     sb $zero,CHECKPOINT_STORAGE
+    sb $zero,SPAWN_NEXT_SIGMA
     jr ra
     nop

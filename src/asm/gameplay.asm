@@ -246,7 +246,6 @@ replace 0x8008F644
 endreplace @sigma_reset_state
     ; v0 here is 2 if ground is dying, 1 if gunner is dying
     sb $zero,SIGMA_FIGHT_STATE
-    sb v0,SPAWN_NEXT_SIGMA
     push t0
     push t1
     ; Increment the lifecycle state to keep the logic above working.
@@ -259,45 +258,64 @@ endreplace @sigma_reset_state
     jr ra
     nop
 
-@sigma_check_spawn_ground:
-replace 0x8008DB6C
-    jal @sigma_check_spawn_ground
+@flag_spawn_which_sigma:
+replace 0x8008DBE8
+    jal @flag_spawn_which_sigma
     nop
+endreplace @flag_spawn_which_sigma
+    ; v0 will be 4 here if spawning gunner
+    push v1
+    li v1,4
+    beq v0,v1,@@flag_spawn_ground_next
     nop
+    li v1,1
+    sb v1,SPAWN_NEXT_SIGMA
+    j @@end
     nop
-endreplace @sigma_check_spawn_ground
-    lbu v1,SPAWN_NEXT_SIGMA
-    li v0,0 ; neutral
-    beq v1,v0,@@spawn_ground_trampoline
-    li v0,1 ; gunner just died
-    beq v1,v0,@@spawn_ground_trampoline
+@@flag_spawn_ground_next:
+    sb $zero,SPAWN_NEXT_SIGMA
+@@end:
+    pop v1
+    ; Overwritten code
+    sb v0,5(s0)
+    lbu v0,0x96(s0)
     nop
     jr ra
     nop
-@@spawn_ground_trampoline:
-    sb $zero,SPAWN_NEXT_SIGMA
-    j 0x8008DBE8
-    li v0,6
 
-@sigma_check_spawn_gunner:
-replace 0x8008DBC4
-    jal @sigma_check_spawn_gunner
+@check_spawn_gunner:
+replace 0x8008DBC4 ; this runs when deciding whether to spawn gunner or not
+    jal @check_spawn_gunner
     nop
     nop
     nop
-endreplace @sigma_check_spawn_gunner
-    lbu v1,SPAWN_NEXT_SIGMA
-    li v0,0 ; neutral
-    beq v1,v0,@@spawn_gunner_trampoline
-    li v0,2 ; ground just died
+endreplace @check_spawn_gunner
+    lb v1,SPAWN_NEXT_SIGMA
+    li v0,1
     beq v1,v0,@@spawn_gunner_trampoline
     nop
     jr ra
     nop
 @@spawn_gunner_trampoline:
-    sb $zero,SPAWN_NEXT_SIGMA
     j 0x8008DBE4
     li v0,2
+
+@check_spawn_ground:
+replace 0x8008DB6C ; this runs when deciding whether to spawn ground or not
+    jal @check_spawn_ground
+    nop
+    nop
+    nop
+endreplace @check_spawn_ground
+    lb v1,SPAWN_NEXT_SIGMA
+    nop
+    beq v1,$zero,@@spawn_ground_trampoline
+    nop
+    jr ra
+    nop
+@@spawn_ground_trampoline:
+    j 0x8008DBE8
+    li v0,6
 
 ; Enable Escape option in start menu in all stages.
 @escape_option:
