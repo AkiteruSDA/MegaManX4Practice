@@ -37,4 +37,8 @@ SystemID PSX
 173C72	b	u	0	MainRAM	Title Menu Option
 17221C	b	u	0	MainRAM	
 1721CF	b	u	0	MainRAM	Set to 0xC0 for reload
+1419B8	d	u	0	MainRAM	Cam X Pos Curr
+1419C4	d	u	0	MainRAM	Cam X Pos Prev
+1419BC	d	u	0	MainRAM	Cam Y Pos Curr
+1419C8	d	u	0	MainRAM	Cam Y Pos Prev
 

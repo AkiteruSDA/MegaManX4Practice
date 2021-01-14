@@ -243,12 +243,36 @@ endreplace @select_hacks
     nop
 
 ; Remove WARNING sirens before bosses.
-; This copies the address from index 2 in a jump table over the address in index 1,
-; where index 1 starts the WARNING siren and index 2 spawns the boss.
+; This overwrites the subroutine address for starting the siren.
+; Also wait until camera stops before spawning bosses.
 @warning_remove:
 replace 0x8010BE84
-    dw 0x800BAF04
+    dw org(@warning_remove)
 endreplace @warning_remove
+    push t0
+    push t1
+    lw t0,CAM_X_CURR
+    nop
+    lw t1,CAM_X_PREV
+    nop
+    bne t0,t1,@@wait_for_camera
+    nop
+    lw t0,CAM_Y_CURR
+    nop
+    lw t1,CAM_Y_PREV
+    nop
+    bne t0,t1,@@wait_for_camera
+    nop
+    pop t1
+    pop t0
+    j 0x800BAF04 ; Subroutine addr next in table
+    nop
+@@wait_for_camera:
+    pop t1
+    pop t0
+    jr ra
+    nop
+
 
 ; Refill HP of Sigma forms on death and keep fight state at 0 (both alive)
 @sigma_reset_state:
