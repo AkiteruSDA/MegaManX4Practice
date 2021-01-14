@@ -225,6 +225,8 @@ endreplace @select_hacks
     j @@done
     nop
 @@checkpoint_loading:
+    li t1,60
+    sb t1,IFRAME_COUNTER
     li t1,0x0003
     sh t1,TELEPORT_VALUE_1
     li t1,0x00C0
