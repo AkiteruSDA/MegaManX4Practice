@@ -204,5 +204,6 @@ endreplace @on_selection
     pop ra
     sb $zero,CHECKPOINT_STORAGE
     sb $zero,SPAWN_NEXT_SIGMA
+    sb $zero,WEAPON_STORAGE
     jr ra
     nop

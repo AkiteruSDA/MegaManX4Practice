@@ -66,6 +66,7 @@ ARMOR_STORAGE equ (TEMP_RAM + 2)
 WEAPON_STORAGE equ (TEMP_RAM + 3)
 CHECKPOINT_STORAGE equ (TEMP_RAM + 4)
 SPAWN_NEXT_SIGMA equ (TEMP_RAM + 5) ; 0 to spawn ground, 1 to spawn gunner
+CHECKPOINT_LOAD_READY equ (TEMP_RAM + 6) ; Using this to get loading checkpoint a frame to soak so weapon swaps don't crash etc
 CAVE equ 0x8011E400
 CAVE_LENGTH equ 0x08D0
 

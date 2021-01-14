@@ -118,6 +118,12 @@ endreplace @select_hacks
     nop
     subi t1,t1,0x0006
     bne t1,$zero,@@done
+    nop
+    ; If ready to load checkpoint, just do that.
+    lb t1,CHECKPOINT_LOAD_READY
+    nop
+    bne $zero,t1,@@checkpoint_loading
+    nop
     ; If not pressing select already, don't do anything. (0x0100 on prev)
     andi v0,v0,0x0100
     subi v0,v0,0x0100
@@ -143,13 +149,8 @@ endreplace @select_hacks
     j @@done
     nop
 @@select_l2:
-    li t1,0x0003
-    sh t1,TELEPORT_VALUE_1
-    li t1,0x00C0
-    ; can't sh here, unaligned?
-    sb t1,TELEPORT_VALUE_2
-    srl t1,8
-    sb t1,(TELEPORT_VALUE_2 + 1)
+    li t1,1
+    sb t1,CHECKPOINT_LOAD_READY
     push ra
     jal load_upgrades
     nop
@@ -221,8 +222,19 @@ endreplace @select_hacks
     jal refill_all
     nop
     pop ra
-    ; j @@done
-    ; nop
+    j @@done
+    nop
+@@checkpoint_loading:
+    li t1,0x0003
+    sh t1,TELEPORT_VALUE_1
+    li t1,0x00C0
+    ;can't sh here, unaligned?
+    sb t1,TELEPORT_VALUE_2
+    srl t1,8
+    sb t1,(TELEPORT_VALUE_2 + 1)
+    sb $zero,CHECKPOINT_LOAD_READY
+    ;j @@done
+    ;nop
 @@done:
     lhu v0,INPUT_1_PREV ; Overwritten code.
     pop t2
