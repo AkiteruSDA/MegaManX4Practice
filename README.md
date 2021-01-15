@@ -29,7 +29,8 @@ Beast    -> Final Weapon 2, part 1
 
 Gameplay:
 ---------
-Note: Press select before the modifier.
+Note: Press select before the modifier to prevent weapon swaps, giga attack etc. from messing up saves.
+The combo will still if you press the modifier before select, though.
 
 Select+Left, Select+Right:
 Decrement or increment the saved checkpoint.

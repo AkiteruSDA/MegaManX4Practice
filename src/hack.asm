@@ -49,10 +49,10 @@ CAM_Y_CURR equ 0x801419BC
 CAM_Y_PREV equ 0x801419C8
 INPUT_1_PREV equ 0x80166C08
 INPUT_1_CURR equ 0x80166C0A
-INPUT_1_NEW equ 0x80166C0C
+INPUT_1_NEW equ 0x80166C0C ; DPad, start, select
 INPUT_2_PREV equ 0x80166C09
 INPUT_2_CURR equ 0x80166C0B
-INPUT_2_NEW equ 0x80166C0D
+INPUT_2_NEW equ 0x80166C0D ; Face buttons, shoulder buttons
 MAVERICKS_DEFEATED equ 0x80172219
 SELECTION_STAGE_ID_MINUS_ONE equ 0x80173DA7 ; only in stage select
 REFIGHT_CAPSULE_STATES equ 0x801721EE ; 8 bytes. 00 is open, 01 is closing and 02 is closed.
@@ -65,15 +65,21 @@ SIGMA_FIGHT_LIFECYCLE equ 0x8013BF66 ; will be 2 before ground spawns, 6 before 
 SIGMA_FIGHT_STATE equ 0x8013B8B8 ; 0 is both alive, 1 is gunner dead, 2 is ground dead
 TEMP_RAM equ 0x8011E3F0
 TEMP_RAM_LENGTH equ 16
-HEARTS_STORAGE equ (TEMP_RAM + 0)
-TANKS_STORAGE equ (TEMP_RAM + 1)
-ARMOR_STORAGE equ (TEMP_RAM + 2)
-WEAPON_STORAGE equ (TEMP_RAM + 3)
-CHECKPOINT_STORAGE equ (TEMP_RAM + 4)
-SPAWN_NEXT_SIGMA equ (TEMP_RAM + 5) ; 0 to spawn ground, 1 to spawn gunner
-CHECKPOINT_LOAD_READY equ (TEMP_RAM + 6) ; Using this to get loading checkpoint a frame to soak so weapon swaps don't crash etc
-CAVE equ 0x8011E400
-CAVE_LENGTH equ 0x08D0
+CONTROLLER_INPUTS_1 equ (TEMP_RAM + 0)
+CONTROLLER_INPUTS_2 equ (TEMP_RAM + 1)
+CONTROLLER_INPUTS_1_PREV equ (TEMP_RAM + 2)
+CONTROLLER_INPUTS_2_PREV equ (TEMP_RAM + 3)
+HEARTS_STORAGE equ (TEMP_RAM + 4)
+TANKS_STORAGE equ (TEMP_RAM + 5)
+ARMOR_STORAGE equ (TEMP_RAM + 6)
+WEAPON_STORAGE equ (TEMP_RAM + 7)
+CHECKPOINT_STORAGE equ (TEMP_RAM + 8)
+SPAWN_NEXT_SIGMA equ (TEMP_RAM + 9) ; 0 to spawn ground, 1 to spawn gunner
+CHECKPOINT_LOAD_READY equ (TEMP_RAM + 10) ; Using this to get loading checkpoint a frame to soak so weapon swaps don't crash etc
+CAVE_1 equ 0x8011C200
+CAVE_1_LENGTH equ 0x03F0
+CAVE_2 equ 0x8011E400
+CAVE_2_LENGTH equ 0x07D0
 
 ; Macros for replacing existing code and then jumping back to cave org
 .macro replace,dest
@@ -103,12 +109,17 @@ CAVE_LENGTH equ 0x08D0
 .dw 0x00000000
 .endarea
 
-.org CAVE
-.area CAVE_LENGTH
+; Split the code into 2 caves because only cave 2 was causing things to break after a while
+.org CAVE_1 ; This is nearly full, so put stuff that won't change much
+.area CAVE_1_LENGTH
 ; Assembly hacks
 .include "asm/tables.asm"
 .include "asm/utils.asm"
+.include "asm/general.asm"
 .include "asm/stageselect.asm"
+.endarea
+.org CAVE_2
+.area CAVE_2_LENGTH
 .include "asm/gameplay.asm"
 .include "asm/menu.asm"
 .endarea

@@ -110,9 +110,10 @@ replace 0x8001247C ; this only runs when the screen isn't fading out
     jal @select_hacks
     nop ; there's an lhu here, nopping out second part of 2-instruction
 endreplace @select_hacks
-    lhu v0,INPUT_1_PREV
     push t1
     push t2
+    push t3
+    push t4
     ; If not in a gameplay state, don't do anything. (0x0006 halfword)
     lhu t1,GAME_STATE_1
     nop
@@ -124,27 +125,47 @@ endreplace @select_hacks
     nop
     bne $zero,t1,@@checkpoint_loading
     nop
-    ; If not pressing select already, don't do anything. (0x0100 on prev)
-    andi v0,v0,0x0100
-    subi v0,v0,0x0100
-    bne v0,$zero,@@done
-    lhu v0,INPUT_1_NEW
+    lhu v0,CONTROLLER_INPUTS_1
+    lhu t2,CONTROLLER_INPUTS_1_PREV
+@@check_select_l2:
+    li t1,0x0101
+    andi t3,v0,0x0101
+    andi t4,t2,0x0101
+    bgeu t4,t3,@@check_select_r2
     nop
-    andi t2,v0,0x0001
-    li t1,0x0001
-    beq t2,t1,@@select_l2
-    andi t2,v0,0x0002
-    li t1,0x0002
-    beq t2,t1,@@select_r2
-    andi t2,v0,0x8000
-    li t1,0x8000
-    beq t2,t1,@@select_left
-    andi t2,v0,0x2000
-    li t1,0x2000
-    beq t2,t1,@@select_right
-    andi t2,v0,0x1000
-    li t1,0x1000
-    beq t2,t1,@@select_up
+    beq t3,t1,@@select_l2
+    nop
+@@check_select_r2:
+    li t1,0x0102
+    andi t3,v0,0x0102
+    andi t4,t2,0x0102
+    bgeu t4,t3,@@check_select_left
+    nop
+    beq t3,t1,@@select_r2
+    nop
+@@check_select_left:
+    li t1,0x8100
+    andi t3,v0,0x8100
+    andi t4,t2,0x8100
+    bgeu t4,t3,@@check_select_right
+    nop
+    beq t3,t1,@@select_left
+    nop
+@@check_select_right:
+    li t1,0x2100
+    andi t3,v0,0x2100
+    andi t4,t2,0x2100
+    bgeu t4,t3,@@check_select_up
+    nop
+    beq t3,t1,@@select_right
+    nop
+@@check_select_up:
+    li t1,0x1100
+    andi t3,v0,0x1100
+    andi t4,t2,0x1100
+    bgeu t4,t3,@@done
+    nop
+    beq t3,t1,@@select_up
     nop
     j @@done
     nop
@@ -239,6 +260,8 @@ endreplace @select_hacks
     ;nop
 @@done:
     lhu v0,INPUT_1_PREV ; Overwritten code.
+    pop t4
+    pop t3
     pop t2
     pop t1
     jr ra
@@ -275,7 +298,6 @@ endreplace @warning_remove
     jr ra
     nop
 
-
 ; Refill HP of Sigma forms on death and keep fight state at 0 (both alive)
 @sigma_reset_state:
 replace 0x8008F644
@@ -287,7 +309,6 @@ endreplace @sigma_reset_state
     sb $zero,SIGMA_FIGHT_STATE
     push t0
     push t1
-    ; Increment the lifecycle state to keep the logic above working.
     li t0,0x30
     la t1,ONE_BEFORE_SIGMA_HPS
     add t1,t1,v0
