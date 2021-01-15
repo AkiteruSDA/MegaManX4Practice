@@ -68,3 +68,5 @@ Known issues:
 -----------
 Loading a previous checkpoint after entering a boss room can mess up enemy textures in the stage.
 No intention of fixing this at the moment as it is a minor issue and likely complex.
+
+Thanks to Luiz for doing a ton of testing, making suggestions, and providing checkpoint-related addresses.
