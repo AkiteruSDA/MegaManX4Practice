@@ -76,6 +76,7 @@ WEAPON_STORAGE equ (TEMP_RAM + 7)
 CHECKPOINT_STORAGE equ (TEMP_RAM + 8)
 SPAWN_NEXT_SIGMA equ (TEMP_RAM + 9) ; 0 to spawn ground, 1 to spawn gunner
 CHECKPOINT_LOAD_READY equ (TEMP_RAM + 10) ; Using this to get loading checkpoint a frame to soak so weapon swaps don't crash etc
+INPUT_1_DONT_COUNT equ (TEMP_RAM + 11)
 CAVE_1 equ 0x8011C200
 CAVE_1_LENGTH equ 0x03F0
 CAVE_2 equ 0x8011E400
@@ -115,11 +116,11 @@ CAVE_2_LENGTH equ 0x07D0
 ; Assembly hacks
 .include "asm/tables.asm"
 .include "asm/utils.asm"
-.include "asm/general.asm"
 .include "asm/stageselect.asm"
 .endarea
 .org CAVE_2
 .area CAVE_2_LENGTH
+.include "asm/general.asm"
 .include "asm/gameplay.asm"
 .include "asm/menu.asm"
 .endarea
