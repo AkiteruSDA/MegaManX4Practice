@@ -246,8 +246,8 @@ endreplace @select_hacks
     j @@done
     nop
 @@checkpoint_loading:
-    li t1,60
-    sb t1,IFRAME_COUNTER
+    li t1,1
+    sb t1,CHECKPOINT_LOADING
     li t1,0x0003
     sh t1,TELEPORT_VALUE_1
     li t1,0x00C0
@@ -266,6 +266,29 @@ endreplace @select_hacks
     pop t1
     jr ra
     nop
+
+@prevent_stun:
+replace 0x800343C0 ; Sets stunned state (0x801418CD) to 2, or not stunned
+    j org(@prevent_stun)
+    nop
+endreplace @prevent_stun
+    push t1
+    lb t1,CHECKPOINT_LOADING
+    nop
+    beq t1,$zero,@@not_preventing
+    sb $zero,CHECKPOINT_LOADING
+    ; When the top bit of HP is set (negative), player becomes stunned.
+    ; So unset that bit here.
+    lb t1,CURRENT_HP
+    nop
+    andi t1,t1,0x7F
+    sb t1,CURRENT_HP
+@@not_preventing:
+    pop t1
+    ; Overwritten code
+    lb v1,2(s0)
+    j (0x800343C0 + 8)
+    sb v0,5(s0)
 
 ; Remove WARNING sirens before bosses.
 ; This overwrites the subroutine address for starting the siren.
