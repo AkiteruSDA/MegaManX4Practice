@@ -37,7 +37,7 @@ stage_id_to_num_checkpoints:
     dh 0x0303 ; 0, Intro
     dh 0x0605 ; 1, Spider
     dh 0x0405 ; 2, Walrus
-    dh 0x0304 ; 3, Mushroom
+    dh 0x0404 ; 3, Mushroom
     dh 0x0402 ; 4, Dragoon
     dh 0x0201 ; 5, Stingray
     dh 0x0206 ; 6, Peacock

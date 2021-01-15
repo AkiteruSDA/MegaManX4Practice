@@ -391,3 +391,49 @@ endreplace @escape_option
 replace 0x8002FF64
     nop ; Nop out branch on mav not defeated for this stage, so every mav stage and endgame stages have escape option
 endreplace @escape_option
+
+; Fix checkpoint 0x03 in Mushroom so player ends up with the correct Y position.
+; This adds the correct Y position into a lookup table based on stage and checkpoint IDs,
+; where for some reason Mushroom checkpoint 3 had a Y position of 0.
+@mushroom_checkpoint_fix:
+replace 0x800F8B5E
+    dh 0x02CB
+endreplace @mushroom_checkpoint_fix
+
+; 0x8003593C sets y position to 0x09CB if the current stage part is not equal to 0.
+; This position is not correct for part 2 checkpoint 0, so X dies immediately.
+; Add some code to check for Peacock stage, part 2, checkpoint 0.
+@peacock_checkpoint_fix:
+replace 0x8003593C
+    j org(@peacock_checkpoint_fix)
+    li v0,0x09CB
+endreplace @peacock_checkpoint_fix
+    push t0
+    push t1
+    lb t0,STAGE_PART
+    nop
+    beq t0,$zero,@@skip
+    nop
+    lb t0,CURRENT_STAGE
+    li t1,STAGE_ID_PEACOCK
+    bne t0,t1,@@end
+    lb t0,STAGE_PART
+    li t1,1
+    bne t0,t1,@@end
+    nop
+    lb t0,CURRENT_CHECKPOINT
+    nop
+    bne t0,$zero,@@end
+    nop
+    li v0,0x03CB ; The correct Y position for this checkpoint
+@@end:
+    pop t1
+    pop t0
+    j 0x800359A0 ; Where the game was conditionally branching in the replaced code
+    nop
+@@skip:
+    ; Since the original code was a BNE this accounts for the false case
+    pop t1
+    pop t0
+    j (0x8003593C + 8)
+    nop
