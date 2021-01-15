@@ -17,7 +17,7 @@ Going to part 2 of a Maverick stage will give you
 the upgrades found in Part 1, if any.
 
 Holding R1 while selecting stage:
-Brings you do an alternative stage based on this mapping:
+Brings you to an alternative stage based on this mapping:
 Spider   -> Intro stage, part 1
 Walrus   -> Final Weapon 2, part 2
 Mushroom -> Final Weapon 1, part 2
@@ -66,5 +66,5 @@ You can escape from every stage instead of just completed stages.
 
 Known issues:
 -----------
-Loading a previous checkpoint after entering a boss room can mess up enemy graphics in the stage.
-No intention of fixing this at the moment due to complexity.
+Loading a previous checkpoint after entering a boss room can mess up enemy textures in the stage.
+No intention of fixing this at the moment as it is a minor issue and likely complex.
