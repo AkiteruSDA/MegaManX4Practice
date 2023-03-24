@@ -41,9 +41,18 @@ endreplace @defeated_icons_gray
     lui t1,hi(org(undefeated_icon_data))
     addu t1,t1,t0
     lw t1,lo(org(undefeated_icon_data))(t1)
-    lui t2,hi(STAGE_SELECT_ICON_DATA)
+    lb t2,CURRENT_PLAYER
+    nop
+    beq t2,$zero,@@x_write ; Player ID for X is 0
+    lui t2,hi(STAGE_SELECT_ICON_DATA_ZERO)
     addu t2,t2,t0
-    sw t1,lo(STAGE_SELECT_ICON_DATA)(t2)
+    sw t1,lo(STAGE_SELECT_ICON_DATA_ZERO)(t2)
+    j @@after_write
+@@x_write:
+    lui t2,hi(STAGE_SELECT_ICON_DATA_X)
+    addu t2,t2,t0
+    sw t1,lo(STAGE_SELECT_ICON_DATA_X)(t2)
+@@after_write:
     addi t0,4
     blt t0,STAGE_SELECT_ICON_DATA_LENGTH,@@undefeated_write_loop
     pop t2
