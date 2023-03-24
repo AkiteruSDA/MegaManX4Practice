@@ -63,6 +63,8 @@ GUNNER_SIGMA_HP equ 0x8013BF62
 GROUND_SIGMA_HP equ 0x8013BF63
 SIGMA_FIGHT_LIFECYCLE equ 0x8013BF66 ; will be 2 before ground spawns, 6 before gunner spawns
 SIGMA_FIGHT_STATE equ 0x8013B8B8 ; 0 is both alive, 1 is gunner dead, 2 is ground dead
+STAGE_SELECT_ICON_DATA equ 0x801BD714
+STAGE_SELECT_ICON_DATA_LENGTH equ 256
 TEMP_RAM equ 0x8011E3F0
 TEMP_RAM_LENGTH equ 16
 CONTROLLER_INPUTS_1 equ (TEMP_RAM + 0)
@@ -124,6 +126,7 @@ CAVE_2_LENGTH equ 0x07D0
 .include "asm/general.asm"
 .include "asm/gameplay.asm"
 .include "asm/menu.asm"
+.include "asm/icons.asm"
 .endarea
 .close
 

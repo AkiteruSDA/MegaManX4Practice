@@ -27,47 +27,41 @@ replace 0x8002EED8
     nop
 endreplace @skip_intros
 
-; Always show undefeated stage icons.
-@undefeated_stage_icons:
-replace 0x8002E5EC
-    ; overwriting an 8 byte pseudoinstruction
-    li t1,0
-    nop
-endreplace @undefeated_stage_icons
-
-; Make defeated stage icons flicker.
-@defeated_icons_flicker:
+; Make defeated stage icons gray. This runs every frame.
+@defeated_icons_gray:
 replace 0x800CA978
-    jal @defeated_icons_flicker
-endreplace @defeated_icons_flicker
-    ; v1 is a counter here. Increments every frame.
-    ; Used to determine visibility on a given frame for flickering.
-    lbu t1,MAVERICKS_DEFEATED
-    li t0,0
-@@visibility_loop:
-    ; Get the visibility byte.
-    ; 0x02 and 0x03 are visible. 0x01 is invisible.
-    li t2,3
-    andi t3,t1,1
-    sub t2,t2,t3
-    andi t3,v0,1
-    sub t2,t2,t3
-    ; Get the right offset for the stage icon
-    lui t3,STAGE_ID_TO_STAGE_SELECT_TABLE_HI
-    add t3,t3,t0
-    lb t3,STAGE_ID_TO_STAGE_SELECT_TABLE_LO(t3)
-    ; Calculate and store to the visibility byte address. Base address is 0x80173E24.
-    li t4,0xC0 ; number of bytes between each foreground item
-    mult t3,t4
-    mflo t3
-    lui t4,0x8017
-    add t3,t4,t3
-    sb t2,0x3E24(t3)
-    ; Shift and iterate again if necessary
-    addi t0,t0,1
-    bne t0,8,@@visibility_loop
-    srl t1,t1,1
+    jal @defeated_icons_gray
+endreplace @defeated_icons_gray
+    ; Write the undefeated icon data before replacing it with defeated icon data if necessary
+    push t0
+    push t1
+    push t2
+    li t0,0 ; Data table offset
+@@undefeated_write_loop:
+    lui t1,hi(org(undefeated_icon_data))
+    addu t1,t1,t0
+    lw t1,lo(org(undefeated_icon_data))(t1)
+    lui t2,hi(STAGE_SELECT_ICON_DATA)
+    addu t2,t2,t0
+    sw t1,lo(STAGE_SELECT_ICON_DATA)(t2)
+    addi t0,4
+    blt t0,STAGE_SELECT_ICON_DATA_LENGTH,@@undefeated_write_loop
+    pop t2
+    pop t1
+    pop t0
+    ; Possibly replace icons with defeated icon data if necessary
+    push ra
+    jal 0x8002E5E0 ; This subroutine sets icons to gray if the boss is defeated
+    nop
+    pop ra
     jr ra
+    nop
+
+; Stop the hologram between the two rows of stages from flickering.
+@prevent_hologram_flicker:
+replace 0x800CA980
+    li v0,1
+endreplace @prevent_hologram_flicker
 
 ; Press select to toggle the defeated state of a maverick.
 @toggle_defeated:
